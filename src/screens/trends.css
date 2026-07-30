@@ -1,8 +1,16 @@
 .grid7 {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: 26px repeat(7, 1fr);
   gap: 4px;
-  max-width: 320px;
+  align-items: center;
+  max-width: 300px;
+}
+
+.gweek {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
 }
 
 .gcell {
@@ -12,37 +20,37 @@
   align-items: center;
   justify-content: center;
   font-family: var(--mono);
-  font-size: 12px;
-  border: 1px solid var(--rule);
-  background: var(--paper);
-  color: var(--ink-faint);
+  font-size: 13px;
 }
 
+/* filled = logged and clean */
 .gcell-clean {
-  background: var(--field);
-  border-color: var(--blue);
-  color: var(--blue);
+  background: var(--blue);
+  border: 1px solid var(--blue);
 }
 
+/* red + ✕ = protocol variable present */
 .gcell-present {
   background: var(--paper);
-  border-color: var(--red);
+  border: 1px solid var(--red);
   color: var(--red);
   font-weight: 700;
 }
 
+/* hollow = not logged */
 .gcell-unlogged {
-  border-style: dashed;
+  background: transparent;
+  border: 1px dashed var(--rule);
 }
 
 .gcell-inline {
   display: inline-flex;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   aspect-ratio: auto;
-  font-size: 10px;
-  vertical-align: -3px;
-  margin-right: 2px;
+  font-size: 9px;
+  vertical-align: -2px;
+  margin-right: 3px;
 }
 
 .grid-legend {
@@ -50,7 +58,7 @@
   gap: 14px;
   font-size: 11px;
   color: var(--ink-soft);
-  margin-top: 10px;
+  margin-top: 12px;
   flex-wrap: wrap;
 }
 
@@ -75,6 +83,7 @@
 
 .chart-baseline {
   fill: var(--red);
+  font-weight: 700;
 }
 
 .chart-legend {
@@ -82,5 +91,5 @@
   flex-wrap: wrap;
   gap: 4px 14px;
   font-size: 11px;
-  margin-top: 8px;
+  margin-top: 10px;
 }

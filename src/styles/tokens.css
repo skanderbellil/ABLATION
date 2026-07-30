@@ -211,7 +211,12 @@ select.textinput {
 .btn:disabled {
   border-color: var(--rule);
   color: var(--ink-faint);
+  background: var(--paper);
   cursor: default;
+}
+
+.btn:active:not(:disabled):not(.btn-primary) {
+  background: var(--field);
 }
 
 .btn-primary {
@@ -254,6 +259,25 @@ select.textinput {
 .segbtn[aria-pressed='true'] {
   background: var(--blue);
   color: var(--paper);
+}
+
+.seg-grow {
+  display: flex;
+  width: 100%;
+}
+
+.seg-grow .segbtn {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 /* tick box (adherence) */

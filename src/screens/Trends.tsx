@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import type { DayEntry, Protocol } from '../types';
 import { todayStr } from '../lib/dates';
 import {
@@ -28,15 +29,22 @@ export function Trends(props: { protocol: Protocol; entries: DayEntry[] }) {
           role="img"
           aria-label={`Exposure grid: ${logged} of ${protocol.durationDays} days logged, current clean run ${cleanRun} days.`}
         >
-          {cells.map((c, i) => (
-            <span key={i} className={`gcell gcell-${c}`} aria-hidden="true">
-              {c === 'present' ? '✕' : c === 'clean' ? '■' : ''}
-            </span>
+          {Array.from({ length: Math.ceil(cells.length / 7) }, (_, w) => (
+            <Fragment key={w}>
+              <span className="gweek" aria-hidden="true">
+                W{w + 1}
+              </span>
+              {cells.slice(w * 7, w * 7 + 7).map((c, d) => (
+                <span key={d} className={`gcell gcell-${c}`} aria-hidden="true">
+                  {c === 'present' ? '✕' : ''}
+                </span>
+              ))}
+            </Fragment>
           ))}
         </div>
         <div className="grid-legend mono">
           <span>
-            <span className="gcell gcell-clean gcell-inline">■</span> clean
+            <span className="gcell gcell-clean gcell-inline"></span> clean
           </span>
           <span>
             <span className="gcell gcell-present gcell-inline">✕</span>{' '}
@@ -111,12 +119,13 @@ export function Trends(props: { protocol: Protocol; entries: DayEntry[] }) {
   );
 }
 
-/** Hand-drawn SVG. One line per metric, x in weeks, baseline weeks marked. */
+/** Hand-drawn SVG. One line per metric, x in weeks, baseline weeks marked.
+    ViewBox is close to the rendered phone width so type stays legible. */
 function WeeklyChart(props: { protocol: Protocol; rows: WeekRow[] }) {
   const { protocol, rows } = props;
-  const W = 600;
-  const H = 260;
-  const PAD = { l: 30, r: 10, t: 12, b: 26 };
+  const W = 360;
+  const H = 230;
+  const PAD = { l: 24, r: 12, t: 10, b: 24 };
   const lo = Math.min(...protocol.metrics.map((m) => m.min));
   const hi = Math.max(...protocol.metrics.map((m) => m.max));
   const iw = W - PAD.l - PAD.r;
@@ -145,11 +154,11 @@ function WeeklyChart(props: { protocol: Protocol; rows: WeekRow[] }) {
             y1={yFor(v)}
             y2={yFor(v)}
             stroke="var(--rule)"
-            strokeWidth="0.5"
+            strokeWidth="0.6"
           />
           <text
-            x={PAD.l - 6}
-            y={yFor(v) + 3}
+            x={PAD.l - 5}
+            y={yFor(v) + 3.5}
             textAnchor="end"
             className="chart-tick"
           >
@@ -161,7 +170,7 @@ function WeeklyChart(props: { protocol: Protocol; rows: WeekRow[] }) {
         <text
           key={r.index}
           x={xFor(i)}
-          y={H - 8}
+          y={H - 7}
           textAnchor="middle"
           className={r.isBaseline ? 'chart-tick chart-baseline' : 'chart-tick'}
         >
@@ -178,7 +187,7 @@ function WeeklyChart(props: { protocol: Protocol; rows: WeekRow[] }) {
               y1={PAD.t}
               y2={PAD.t + ih}
               stroke="var(--red)"
-              strokeWidth="0.5"
+              strokeWidth="0.8"
               strokeDasharray="3 3"
             />
           )
@@ -195,13 +204,13 @@ function WeeklyChart(props: { protocol: Protocol; rows: WeekRow[] }) {
           .join(' ');
         return (
           <g key={m.id}>
-            <path d={d} fill="none" stroke={m.color} strokeWidth="1.5" />
+            <path d={d} fill="none" stroke={m.color} strokeWidth="1.8" />
             {pts.map((p) => (
               <circle
                 key={p.i}
                 cx={xFor(p.i)}
                 cy={yFor(p.v)}
-                r="2.5"
+                r="3"
                 fill={m.color}
               />
             ))}

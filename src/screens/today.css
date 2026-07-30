@@ -6,7 +6,10 @@
 }
 
 .datenav-btn {
-  min-width: 46px;
+  min-width: 56px;
+  min-height: 44px;
+  font-size: 17px;
+  line-height: 1;
 }
 
 .datenav-date {
@@ -38,8 +41,13 @@
 
 .sleep-row {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: flex-end;
+}
+
+.sleep-field input[type='time'] {
+  padding-left: 6px;
+  padding-right: 4px;
 }
 
 .sleep-field {
