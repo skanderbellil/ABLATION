@@ -225,5 +225,7 @@ const NEGATIVE_METRIC_WORDS =
   /\b(irritab|anxiet|anxious|pain|stress|fatigue|anger|angry|depress|craving|insomnia|worry|sad|low|brain ?fog|nausea|restless)/i;
 
 export function looksInverted(name: string): boolean {
+  // "anxiety-free", "pain-free" etc. are already the positive pole
+  if (/free|without|absence|-less|\bno\b/i.test(name)) return false;
   return NEGATIVE_METRIC_WORDS.test(name);
 }

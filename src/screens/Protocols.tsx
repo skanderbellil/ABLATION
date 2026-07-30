@@ -74,6 +74,20 @@ export function Protocols(props: Props) {
 
   const say = (m: string) => setMessage(m);
 
+  // Sections are conditional, so numbers are assigned in render order —
+  // a numbered form must not skip.
+  let n = 1;
+  const protocolsNum = String(n++);
+  const draftNums: [string, string] | null =
+    selected?.status === 'draft'
+      ? [String(n++), String(n++)]
+      : null;
+  const recordNum =
+    selected && selected.status !== 'draft' ? String(n++) : null;
+  const archiveNum = archive.length > 0 ? String(n++) : null;
+  const dataNum = String(n++);
+  const reminderNum = String(n++);
+
   const startFrom = async (make: () => Protocol) => {
     const p = make();
     await props.onSaveProtocol(p);
@@ -89,7 +103,7 @@ export function Protocols(props: Props) {
         </p>
       )}
 
-      <Section num="1" title="Protocols">
+      <Section num={protocolsNum} title="Protocols">
         {current.length === 0 && (
           <p className="empty">
             No protocol on file. Start one from a template below.
@@ -103,43 +117,53 @@ export function Protocols(props: Props) {
             onSelect={() => props.onSelect(p.id)}
           />
         ))}
-        <div className="row-gap tpl-row">
+        <p className="microlabel tpl-head">Start new — from template</p>
+        <div className="tpl-list">
           {TEMPLATES.map((t) => (
             <button
               key={t.id}
               type="button"
-              className="btn"
+              className="tplrow"
               onClick={() => startFrom(t.make)}
-              title={t.summary}
             >
-              + {t.title}
+              <span className="tplrow-title">{t.title}</span>
+              <span className="tplrow-sum">{t.summary}</span>
             </button>
           ))}
           <button
             type="button"
-            className="btn"
+            className="tplrow"
             onClick={() => startFrom(blankProtocol)}
           >
-            + Blank
+            <span className="tplrow-title">Blank protocol</span>
+            <span className="tplrow-sum">
+              Define your own variable, metrics and duration.
+            </span>
           </button>
         </div>
       </Section>
 
-      {selected && selected.status === 'draft' && (
+      {selected && selected.status === 'draft' && draftNums && (
         <DraftEditor
           key={selected.id}
+          nums={draftNums}
           protocol={selected}
           onSave={props.onSaveProtocol}
           say={say}
         />
       )}
 
-      {selected && selected.status !== 'draft' && (
-        <LockedDetail protocol={selected} onSave={props.onSaveProtocol} say={say} />
+      {selected && selected.status !== 'draft' && recordNum && (
+        <LockedDetail
+          num={recordNum}
+          protocol={selected}
+          onSave={props.onSaveProtocol}
+          say={say}
+        />
       )}
 
-      {archive.length > 0 && (
-        <Section num="3" title="Archive">
+      {archiveNum && (
+        <Section num={archiveNum} title="Archive">
           {archive.map((p) => (
             <ProtocolRow
               key={p.id}
@@ -154,7 +178,7 @@ export function Protocols(props: Props) {
         </Section>
       )}
 
-      <Section num="4" title="Data">
+      <Section num={dataNum} title="Data">
         <div className="row-gap">
           <button
             type="button"
@@ -257,7 +281,7 @@ export function Protocols(props: Props) {
         </div>
       </Section>
 
-      <Section num="5" title="Reminder">
+      <Section num={reminderNum} title="Reminder">
         <p className="hint">
           This app cannot notify you. Installed iOS web apps cannot schedule
           local notifications, and web push needs a server this app does not
@@ -301,7 +325,8 @@ function ProtocolRow(props: {
     >
       <span className="protorow-name">{p.name}</span>
       <span className="protorow-meta mono">
-        {p.status.toUpperCase()} · {p.startDate} · {p.durationDays}D
+        <span className={`st st-${p.status}`}>{p.status.toUpperCase()}</span> ·{' '}
+        {p.startDate} · {p.durationDays}D
         {p.prereg ? ` · [${p.prereg.fingerprint}]` : ''}
       </span>
     </button>
@@ -311,6 +336,7 @@ function ProtocolRow(props: {
 /* ------------------------------------------------------------------ */
 
 function DraftEditor(props: {
+  nums: [string, string];
   protocol: Protocol;
   onSave: (p: Protocol) => Promise<void>;
   say: (m: string) => void;
@@ -368,7 +394,8 @@ function DraftEditor(props: {
   };
 
   return (
-    <Section num="2" title="Draft configuration">
+    <>
+    <Section num={props.nums[0]} title="Draft configuration">
       {p.banner && <p className="notice">{p.banner}</p>}
 
       <div className="draft-grid">
@@ -425,10 +452,12 @@ function DraftEditor(props: {
         />
       </div>
 
-      <h3 className="draft-subhead">Metrics (1–10, higher is better)</h3>
+      <h3 className="draft-subhead">
+        {props.nums[0]}.1 Metrics — 1–10, higher is better
+      </h3>
       {p.metrics.map((m) => (
         <div key={m.id} className="draft-item">
-          <div className="label-row">
+          <div className="label-row label-row-full">
             <span className="field-code">{m.code}</span>
             <input
               className="textinput"
@@ -436,6 +465,22 @@ function DraftEditor(props: {
               aria-label={`Metric ${m.code} name`}
               onChange={(e) => setMetric(m.id, { name: e.target.value })}
             />
+            <button
+              type="button"
+              className="btn btn-small row-remove"
+              aria-label={`Remove metric ${m.code}`}
+              disabled={p.metrics.length <= 1}
+              onClick={() =>
+                save({
+                  ...p,
+                  metrics: p.metrics
+                    .filter((x) => x.id !== m.id)
+                    .map((x, i) => ({ ...x, code: `M${i + 1}` })),
+                })
+              }
+            >
+              ✕
+            </button>
           </div>
           {looksInverted(m.name) && (
             <p className="invert-warn">
@@ -452,21 +497,6 @@ function DraftEditor(props: {
             placeholder="1 = worst anchor · 10 = best anchor"
             onChange={(e) => setMetric(m.id, { hint: e.target.value })}
           />
-          <button
-            type="button"
-            className="btn btn-small"
-            disabled={p.metrics.length <= 1}
-            onClick={() =>
-              save({
-                ...p,
-                metrics: p.metrics
-                  .filter((x) => x.id !== m.id)
-                  .map((x, i) => ({ ...x, code: `M${i + 1}` })),
-              })
-            }
-          >
-            Remove
-          </button>
         </div>
       ))}
       <button
@@ -494,10 +524,10 @@ function DraftEditor(props: {
         + Metric
       </button>
 
-      <h3 className="draft-subhead">Exposures</h3>
+      <h3 className="draft-subhead">{props.nums[0]}.2 Exposures</h3>
       {p.exposures.map((x, i) => (
         <div key={x.id} className="draft-item">
-          <div className="label-row">
+          <div className="label-row label-row-full">
             <span className="field-code">X{i + 1}</span>
             <input
               className="textinput"
@@ -505,6 +535,20 @@ function DraftEditor(props: {
               aria-label={`Exposure ${i + 1} label`}
               onChange={(e) => setExposure(x.id, { label: e.target.value })}
             />
+            <button
+              type="button"
+              className="btn btn-small row-remove"
+              aria-label={`Remove exposure ${x.label}`}
+              disabled={p.exposures.length <= 1}
+              onClick={() =>
+                save({
+                  ...p,
+                  exposures: p.exposures.filter((e) => e.id !== x.id),
+                })
+              }
+            >
+              ✕
+            </button>
           </div>
           <div className="row-gap">
             <Seg
@@ -550,16 +594,6 @@ function DraftEditor(props: {
               }
             />
           )}
-          <button
-            type="button"
-            className="btn btn-small"
-            disabled={p.exposures.length <= 1}
-            onClick={() =>
-              save({ ...p, exposures: p.exposures.filter((e) => e.id !== x.id) })
-            }
-          >
-            Remove
-          </button>
         </div>
       ))}
       <button
@@ -578,10 +612,10 @@ function DraftEditor(props: {
         + Exposure
       </button>
 
-      <h3 className="draft-subhead">Adherence checklist</h3>
+      <h3 className="draft-subhead">{props.nums[0]}.3 Adherence checklist</h3>
       {p.adherence.map((a, i) => (
         <div key={a.id} className="draft-item">
-          <div className="label-row">
+          <div className="label-row label-row-full">
             <span className="field-code">A{i + 1}</span>
             <input
               className="textinput"
@@ -598,7 +632,8 @@ function DraftEditor(props: {
             />
             <button
               type="button"
-              className="btn btn-small"
+              className="btn btn-small row-remove"
+              aria-label={`Remove adherence item ${i + 1}`}
               onClick={() =>
                 save({
                   ...p,
@@ -606,7 +641,7 @@ function DraftEditor(props: {
                 })
               }
             >
-              Remove
+              ✕
             </button>
           </div>
         </div>
@@ -624,7 +659,9 @@ function DraftEditor(props: {
         + Adherence item
       </button>
 
-      <h3 className="draft-subhead">Pre-registration</h3>
+    </Section>
+
+    <Section num={props.nums[1]} title="Pre-registration">
       <p className="hint">
         Predictions are locked before day 1 data exists and cannot be edited
         afterwards — by any path. To change them later you abandon this
@@ -637,6 +674,7 @@ function DraftEditor(props: {
             <span className="name">{m.name}</span>
           </div>
           <Seg
+            grow
             label={`Prediction for ${m.name}`}
             options={['improves', 'no change', 'worsens']}
             value={predictions[m.id] ?? null}
@@ -670,7 +708,7 @@ function DraftEditor(props: {
       {!confirmLock ? (
         <button
           type="button"
-          className="btn btn-primary"
+          className="btn btn-primary btn-block"
           disabled={!lockable}
           onClick={() => setConfirmLock(true)}
         >
@@ -704,12 +742,14 @@ function DraftEditor(props: {
         </p>
       )}
     </Section>
+    </>
   );
 }
 
 /* ------------------------------------------------------------------ */
 
 function LockedDetail(props: {
+  num: string;
   protocol: Protocol;
   onSave: (p: Protocol) => Promise<void>;
   say: (m: string) => void;
@@ -719,7 +759,7 @@ function LockedDetail(props: {
   const predictions = p.prereg?.predictions ?? {};
 
   return (
-    <Section num="2" title="Protocol record">
+    <Section num={props.num} title="Protocol record">
       {p.banner && <p className="notice">{p.banner}</p>}
       <table className="datatable">
         <tbody>

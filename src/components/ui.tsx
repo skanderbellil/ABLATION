@@ -24,9 +24,14 @@ export function Seg(props: {
   options: string[];
   value: string | null;
   onChange: (v: string) => void;
+  grow?: boolean; // fill the row width — easier to tap
 }) {
   return (
-    <div className="seg" role="group" aria-label={props.label}>
+    <div
+      className={props.grow ? 'seg seg-grow' : 'seg'}
+      role="group"
+      aria-label={props.label}
+    >
       {props.options.map((opt) => (
         <button
           key={opt}

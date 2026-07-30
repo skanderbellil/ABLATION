@@ -14,7 +14,28 @@
 
 .protorow-selected {
   border-color: var(--ink);
+  border-left: 3px solid var(--ink);
   background: var(--paper-deep);
+}
+
+.st-active {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.st-draft {
+  color: var(--ochre);
+  font-weight: 700;
+}
+
+.st-complete {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.st-abandoned {
+  color: var(--red);
+  font-weight: 700;
 }
 
 .protorow-name {
@@ -30,8 +51,50 @@
   letter-spacing: 0.05em;
 }
 
-.tpl-row {
-  margin-top: 12px;
+.tpl-head {
+  margin: 16px 0 8px;
+}
+
+.tpl-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tplrow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  width: 100%;
+  text-align: left;
+  background: var(--paper);
+  border: 1px dashed var(--rule);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+
+.tplrow:active {
+  background: var(--paper-deep);
+}
+
+.tplrow-title {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.tplrow-title::before {
+  content: '+ ';
+  color: var(--ink-soft);
+}
+
+.tplrow-sum {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--ink-soft);
 }
 
 .draft-grid {
@@ -86,6 +149,25 @@
   padding: 4px 10px;
   min-height: 28px;
   font-size: 10px;
+}
+
+.label-row-full {
+  width: 100%;
+  align-items: center;
+}
+
+.label-row-full .textinput {
+  flex: 1;
+  min-width: 0;
+}
+
+.row-remove {
+  margin-left: auto;
+  flex: none;
+  min-height: 34px;
+  min-width: 34px;
+  border-color: var(--rule);
+  color: var(--ink-soft);
 }
 
 .btn-file {
