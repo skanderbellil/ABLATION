@@ -1,0 +1,57 @@
+.datenav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0 10px;
+}
+
+.datenav-btn {
+  min-width: 46px;
+}
+
+.datenav-date {
+  flex: 1;
+  text-align: center;
+}
+
+.datenav-long {
+  font-family: var(--mono);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+}
+
+.datenav-badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.12em;
+  margin-top: 2px;
+}
+
+.today-field {
+  margin-bottom: 14px;
+}
+
+.today-field:last-child {
+  margin-bottom: 0;
+}
+
+.sleep-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.sleep-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.sleep-hours {
+  font-size: 18px;
+  color: var(--blue);
+  padding: 6px 0;
+}

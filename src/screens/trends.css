@@ -1,0 +1,86 @@
+.grid7 {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  max-width: 320px;
+}
+
+.gcell {
+  aspect-ratio: 1;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink-faint);
+}
+
+.gcell-clean {
+  background: var(--field);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.gcell-present {
+  background: var(--paper);
+  border-color: var(--red);
+  color: var(--red);
+  font-weight: 700;
+}
+
+.gcell-unlogged {
+  border-style: dashed;
+}
+
+.gcell-inline {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  aspect-ratio: auto;
+  font-size: 10px;
+  vertical-align: -3px;
+  margin-right: 2px;
+}
+
+.grid-legend {
+  display: flex;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.grid-stats {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  margin: 10px 0 0;
+}
+
+.weekly-chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-tick {
+  font-family: var(--mono);
+  font-size: 9px;
+  fill: var(--ink-soft);
+}
+
+.chart-baseline {
+  fill: var(--red);
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: 11px;
+  margin-top: 8px;
+}

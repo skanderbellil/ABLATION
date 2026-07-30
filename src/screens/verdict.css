@@ -1,0 +1,57 @@
+.verdict-locked {
+  text-align: center;
+  padding: 64px 0;
+}
+
+.verdict-remaining {
+  font-size: 56px;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1;
+}
+
+.verdict-until {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  margin-top: 18px;
+}
+
+.verdict-n {
+  color: var(--ink-faint);
+  font-size: 10px;
+}
+
+.mark {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.mark-hit {
+  color: var(--green);
+}
+
+.mark-miss {
+  color: var(--red);
+}
+
+.mark-inconclusive {
+  color: var(--ink-soft);
+}
+
+.verdict-quote {
+  margin: 0;
+  border-left: 2px solid var(--ink);
+  padding: 6px 12px;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--blue);
+  white-space: pre-wrap;
+}
+
+.verdict-question {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 14px;
+  margin: 10px 0 0;
+}
