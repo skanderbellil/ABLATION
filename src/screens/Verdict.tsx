@@ -83,7 +83,9 @@ export function Verdict(props: { protocol: Protocol; entries: DayEntry[] }) {
                         ? '—'
                         : (v.delta > 0 ? '+' : '') + v.delta.toFixed(1)}
                     </td>
-                    <td className={`mark mark-${v.mark}`}>{marks[v.mark]}</td>
+                    <td>
+                      <span className={`stamp mark-${v.mark}`}>{marks[v.mark]}</span>
+                    </td>
                   </tr>
                 );
               })}

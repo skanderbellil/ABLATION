@@ -105,6 +105,32 @@ button {
   text-transform: uppercase;
 }
 
+/* The one motif the system already commits to at full strength — the
+   active nav tab's ink-fill/paper-text pairing — reused for every other
+   moment that deserves the same certainty: section numbers, day badges,
+   verdict marks. One move, applied consistently, not scattered effects. */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  padding: 3px 8px;
+  line-height: 1.3;
+}
+
+/* baseline days already read red everywhere else (exposure grid, chart,
+   weekly table) — the stamp inherits that instead of a fixed ink fill.
+   Specificity matched to .stamp so import order can never flip this back. */
+.stamp.stamp-red {
+  background: var(--red);
+}
+
 /* ---------- masthead ---------- */
 
 .masthead {
@@ -118,8 +144,12 @@ button {
 .masthead-row {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.masthead-row > div:first-child {
+  min-width: 0;
 }
 
 .masthead-form-id {
@@ -132,8 +162,9 @@ button {
 .masthead-name {
   font-family: var(--sans);
   font-weight: 700;
-  font-size: 19px;
-  letter-spacing: -0.01em;
+  font-size: 21px;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
   margin: 2px 0 0;
   text-transform: uppercase;
 }
@@ -144,6 +175,12 @@ button {
   font-size: 11px;
   color: var(--ink);
   white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex: none;
+  padding-top: 2px;
 }
 
 .masthead-meta .fingerprint {
@@ -166,11 +203,12 @@ button {
 
 .section-num {
   font-family: var(--mono);
+  font-weight: 700;
   font-size: 11px;
-  color: var(--ink);
-  border: 1px solid var(--ink);
-  padding: 0 5px;
-  line-height: 18px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 2px 7px;
+  line-height: 1.3;
   border-radius: var(--radius);
 }
 

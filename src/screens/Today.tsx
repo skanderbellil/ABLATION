@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import type { DayEntry, Protocol } from '../types';
 import { addDays, formatLong, sleepHours, todayStr } from '../lib/dates';
 import { emptyEntry } from '../lib/entries';
-import { dayBadge } from '../components/Masthead';
+import { dayBadge, dayBadgeClass } from '../components/Masthead';
 import { QuickCapture } from '../components/QuickCapture';
 import { ScoreRow, Section, Seg, Stepper, Tick } from '../components/ui';
 import './today.css';
@@ -56,7 +56,9 @@ export function Today(props: {
         </button>
         <div className="datenav-date">
           <div className="datenav-long">{formatLong(date)}</div>
-          <div className="datenav-badge">{dayBadge(protocol, date)}</div>
+          <span className={`${dayBadgeClass(protocol, date)} datenav-badge`}>
+            {dayBadge(protocol, date)}
+          </span>
         </div>
         <button
           type="button"

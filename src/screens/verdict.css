@@ -4,7 +4,8 @@
 }
 
 .verdict-remaining {
-  font-size: 56px;
+  font-size: 72px;
+  font-weight: 700;
   color: var(--ink);
   margin: 0;
   line-height: 1;
@@ -22,21 +23,16 @@
   font-size: 10px;
 }
 
-.mark {
-  font-weight: 700;
-  letter-spacing: 0.06em;
+.stamp.mark-hit {
+  background: var(--green);
 }
 
-.mark-hit {
-  color: var(--green);
+.stamp.mark-miss {
+  background: var(--red);
 }
 
-.mark-miss {
-  color: var(--red);
-}
-
-.mark-inconclusive {
-  color: var(--ink-soft);
+.stamp.mark-inconclusive {
+  background: var(--ink-soft);
 }
 
 .verdict-quote {
