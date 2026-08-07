@@ -15,6 +15,9 @@ export function toCsv(protocol: Protocol, entries: DayEntry[]): string {
     'day',
     ...protocol.metrics.map((m) => m.code),
     ...protocol.exposures.map((e) => 'X_' + e.label.replace(/[^A-Za-z0-9]+/g, '_')),
+    ...protocol.exposures
+      .filter((x) => x.isProtocolVariable)
+      .map((x) => 'QL_' + x.label.replace(/[^A-Za-z0-9]+/g, '_')),
     ...protocol.adherence.map((a) => 'A_' + a.label.replace(/[^A-Za-z0-9]+/g, '_')),
     'sleep_bed',
     'sleep_wake',
@@ -30,6 +33,9 @@ export function toCsv(protocol: Protocol, entries: DayEntry[]): string {
       const v = e.exposures[x.id];
       return v === undefined ? '' : v;
     }),
+    ...protocol.exposures
+      .filter((x) => x.isProtocolVariable)
+      .map((x) => e.quickLogCounts?.[x.id] ?? ''),
     ...protocol.adherence.map((a) => {
       const v = e.adherence[a.id];
       return v === undefined ? '' : v;

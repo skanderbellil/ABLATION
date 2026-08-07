@@ -8,6 +8,11 @@ export function dayBadge(p: Protocol, date: string): string {
   return `DAY ${d} / ${p.durationDays}`;
 }
 
+/** Stamp modifier class — baseline days read red everywhere else in the app. */
+export function dayBadgeClass(p: Protocol, date: string): string {
+  return dayNumber(p.startDate, date) < 1 ? 'stamp stamp-red' : 'stamp';
+}
+
 export function Masthead(props: { protocol: Protocol | null }) {
   const p = props.protocol;
   return (
@@ -21,8 +26,12 @@ export function Masthead(props: { protocol: Protocol | null }) {
           {p?.prereg && (
             <div className="fingerprint">[{p.prereg.fingerprint}]</div>
           )}
-          {p && p.status !== 'draft' && <div>{dayBadge(p, todayStr())}</div>}
-          {p && p.status === 'draft' && <div>DRAFT</div>}
+          {p && p.status !== 'draft' && (
+            <span className={dayBadgeClass(p, todayStr())}>
+              {dayBadge(p, todayStr())}
+            </span>
+          )}
+          {p && p.status === 'draft' && <span className="stamp">DRAFT</span>}
         </div>
       </div>
     </header>

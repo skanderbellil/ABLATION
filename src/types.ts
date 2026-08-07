@@ -56,6 +56,10 @@ export type DayEntry = {
   sleep?: { bed: string; wake: string }; // "HH:MM"
   note?: string;
   loggedAt: string; // ISO — when the entry was first written; gap to date = recall lag
+  // Tap tally for exposures logged in real time via quick capture, keyed by
+  // exposure id. Display-only reassurance ("logged 3x today") — the
+  // authoritative value stats/exports read stays `exposures`.
+  quickLogCounts?: Record<string, number>;
 };
 
 export type ExportBundle = {
