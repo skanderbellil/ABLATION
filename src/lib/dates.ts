@@ -17,6 +17,12 @@ export function todayStr(): string {
   return toDateStr(new Date());
 }
 
+/** Current local time as "HH:MM", for real-time capture (quick log). */
+export function nowHHMM(): string {
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
 export function addDays(s: string, n: number): string {
   const d = parseDateStr(s);
   d.setDate(d.getDate() + n);

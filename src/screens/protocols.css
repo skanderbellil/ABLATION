@@ -18,6 +18,17 @@
   background: var(--paper-deep);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .protorow:not(.protorow-selected):hover {
+    border-color: var(--ink);
+  }
+
+  .tplrow:hover {
+    border-color: var(--ink);
+    background: var(--paper-deep);
+  }
+}
+
 .st-active {
   color: var(--green);
   font-weight: 700;

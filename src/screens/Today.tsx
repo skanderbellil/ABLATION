@@ -1,20 +1,11 @@
 import { useMemo, useState } from 'react';
 import type { DayEntry, Protocol } from '../types';
 import { addDays, formatLong, sleepHours, todayStr } from '../lib/dates';
+import { emptyEntry } from '../lib/entries';
 import { dayBadge } from '../components/Masthead';
+import { QuickCapture } from '../components/QuickCapture';
 import { ScoreRow, Section, Seg, Stepper, Tick } from '../components/ui';
 import './today.css';
-
-function emptyEntry(protocolId: string, date: string): DayEntry {
-  return {
-    protocolId,
-    date,
-    scores: {},
-    exposures: {},
-    adherence: {},
-    loggedAt: new Date().toISOString(),
-  };
-}
 
 export function Today(props: {
   protocol: Protocol;
@@ -51,6 +42,8 @@ export function Today(props: {
   return (
     <div>
       {protocol.banner && <p className="notice">{protocol.banner}</p>}
+
+      <QuickCapture protocol={protocol} entries={entries} onSave={props.onSave} />
 
       <div className="datenav">
         <button
